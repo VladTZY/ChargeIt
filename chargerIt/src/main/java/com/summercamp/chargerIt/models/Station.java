@@ -20,7 +20,13 @@ public class Station {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "is_open")
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name = "longitude", nullable = true)
+    private double longitude;
+
+    @Column(name = "is_open", nullable = true)
     private boolean isOpen;
 
     @OneToOne

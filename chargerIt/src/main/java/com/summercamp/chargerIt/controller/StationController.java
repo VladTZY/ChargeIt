@@ -20,6 +20,12 @@ public class StationController {
         return stationService.getStations();
     }
 
+    @GetMapping("/{id}")
+    public Station getStation(@PathVariable Long id) { return stationService.getStation(id); }
+
+    @GetMapping("/{id}/location_url")
+    public String getStationUrl(@PathVariable Long id) {return stationService.getLocationUrl(id);}
+
     @PostMapping(value = "/add")
     public Station addStation(@RequestBody Station newStation) {
         return stationService.addStation(newStation);
