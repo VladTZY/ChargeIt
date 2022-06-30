@@ -3,6 +3,7 @@ package com.summercamp.chargerIt.controller;
 import com.summercamp.chargerIt.models.Station;
 import com.summercamp.chargerIt.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class StationController {
         return stationService.getStations();
     }
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add")
     public Station addStation(@RequestBody Station newStation) {
         return stationService.addStation(newStation);
     }

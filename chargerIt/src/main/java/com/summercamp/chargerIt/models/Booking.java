@@ -1,6 +1,8 @@
 package com.summercamp.chargerIt.models;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import sun.util.resources.LocaleData;
 
 import javax.persistence.*;
@@ -28,5 +30,6 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "station_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("bookings")
     private Station station;
 }
