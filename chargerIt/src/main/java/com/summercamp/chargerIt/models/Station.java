@@ -20,11 +20,9 @@ public class Station {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "latitude")
-    private double latitude;
-
-    @Column(name = "longitude", nullable = true)
-    private double longitude;
+    @OneToOne
+    @JoinColumn(name = "location_details_id", referencedColumnName = "id")
+    private LocationDetails locationDetails;
 
     @Column(name = "is_open", nullable = true)
     private boolean isOpen;
@@ -33,7 +31,9 @@ public class Station {
     @JoinColumn(name = "station_type_id", referencedColumnName = "id")
     private StationType stationType;
 
+    /*
     @OneToMany(mappedBy = "station")
     @JsonIgnoreProperties("station")
     private List<Booking> bookings;
+     */
 }

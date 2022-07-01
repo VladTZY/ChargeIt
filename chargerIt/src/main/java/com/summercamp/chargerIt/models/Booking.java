@@ -7,6 +7,7 @@ import sun.util.resources.LocaleData;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,13 +24,13 @@ public class Booking {
     private String carLicense;
 
     @Column(name = "start_date_time")
-    private LocalDate startDateTime;
+    private LocalDateTime startDateTime;
 
     @Column(name = "duration")
     private int duration;
 
     @ManyToOne
     @JoinColumn(name = "station_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("bookings")
+    //@JsonIgnoreProperties("bookings")
     private Station station;
 }

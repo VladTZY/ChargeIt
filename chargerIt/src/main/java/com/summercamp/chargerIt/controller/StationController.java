@@ -1,5 +1,6 @@
 package com.summercamp.chargerIt.controller;
 
+import com.summercamp.chargerIt.dto.StationDto;
 import com.summercamp.chargerIt.models.Station;
 import com.summercamp.chargerIt.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class StationController {
     public String getStationUrl(@PathVariable Long id) {return stationService.getLocationUrl(id);}
 
     @PostMapping(value = "/add")
-    public Station addStation(@RequestBody Station newStation) {
-        return stationService.addStation(newStation);
+    public Station addStation(@RequestBody StationDto newStationDto) {
+        return stationService.addStation(newStationDto);
     }
 }
