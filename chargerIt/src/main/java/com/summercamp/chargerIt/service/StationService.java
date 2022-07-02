@@ -17,8 +17,9 @@ public class StationService {
 
     @Autowired
     private StationRepo stationRepo;
+
     @Autowired
-    private LocationDetailsRepo locationDetailsRepo;
+    private LocationDetailsService locationDetailsService;
 
     @Autowired
     private StationTypeService stationTypeService;
@@ -27,30 +28,34 @@ public class StationService {
         return stationRepo.findAll();
     }
 
-    public Station getStation(Long id) { return stationRepo.findById(id).orElseThrow(() -> { return new NotFoundException("Id not found"); }); }
+    public Station getStationById(Long id) { return stationRepo.findById(id).orElseThrow(() -> { return new NotFoundException("Id not found"); }); }
 
     public String getLocationUrl(Long id) {
-        Station station = getStation(id);
+        Station station = getStationById(id);
 
         return "https://www.google.com/maps/search/?api=1&query=" + station.getLocationDetails().getLatitude() + "%2C" + station.getLocationDetails().getLongitude();
     }
+
+    public Station getStationFromDto(StationDto stationDto) {
+        Station station = new Station(stationDto.getName(), stationDto.getLocation(), stationDto.isOpen());
+        StationType stationType = stationTypeService.getStationTypeById(stationDto.getStationTypeId());
+        LocationDetails locationDetails = new LocationDetails(
+                stationDto.getCountry(),
+                stationDto.getCity(),
+                stationDto.getLatitude(),
+                stationDto.getLongitude()
+        );
+
+        locationDetailsService.addLocationDetails(locationDetails);
+
+        station.setStationType(stationType);
+        station.setLocationDetails(locationDetails);
+
+        return station;
+    }
+
     public Station addStation(StationDto newStationDto) {
-        Station newStation = new Station();
-        StationType newStationType = stationTypeService.getStationTypeById(newStationDto.getStationTypeId());
-        LocationDetails newLocationDetails = new LocationDetails();
-
-        newStation.setName(newStationDto.getName());
-        newStation.setLocation(newStationDto.getLocation());
-        newStation.setOpen(newStationDto.isOpen());
-        newStation.setStationType(newStationType);
-
-        newLocationDetails.setCountry(newStationDto.getCountry());
-        newLocationDetails.setCity(newStationDto.getCity());
-        newLocationDetails.setLatitude(newStationDto.getLatitude());
-        newLocationDetails.setLongitude(newStationDto.getLongitude());
-
-        locationDetailsRepo.save(newLocationDetails);
-        newStation.setLocationDetails(newLocationDetails);
+        Station newStation = getStationFromDto(newStationDto);
 
         return stationRepo.save(newStation);
     }

@@ -1,11 +1,14 @@
 package com.summercamp.chargerIt.models;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@NoArgsConstructor @Getter @Setter
 public class LocationDetails {
 
     @Id
@@ -23,4 +26,11 @@ public class LocationDetails {
 
     @Column(name = "longitude", nullable = true)
     private double longitude;
+
+    public LocationDetails(String country, String city, double latitude, double longitude) {
+        this.country = country;
+        this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }

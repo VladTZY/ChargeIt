@@ -2,12 +2,15 @@ package com.summercamp.chargerIt.models;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@NoArgsConstructor @Getter @Setter
 public class Station {
 
     @Id
@@ -31,9 +34,9 @@ public class Station {
     @JoinColumn(name = "station_type_id", referencedColumnName = "id")
     private StationType stationType;
 
-    /*
-    @OneToMany(mappedBy = "station")
-    @JsonIgnoreProperties("station")
-    private List<Booking> bookings;
-     */
+    public Station(String name, String location, boolean open) {
+        this.name = name;
+        this.location = location;
+        this.isOpen = open;
+    }
 }

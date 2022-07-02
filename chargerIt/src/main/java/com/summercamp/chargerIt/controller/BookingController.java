@@ -1,5 +1,6 @@
 package com.summercamp.chargerIt.controller;
 
+import com.summercamp.chargerIt.dto.BookingDto;
 import com.summercamp.chargerIt.models.Booking;
 import com.summercamp.chargerIt.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class BookingController {
     }
 
     @PostMapping("/add")
-    public Booking addBooking(@RequestBody Booking newBooking) {
-        return bookingService.addBooking(newBooking);
+    public Booking addBooking(@RequestBody BookingDto newBookingDto) {
+        return bookingService.addBooking(newBookingDto);
     }
 }
