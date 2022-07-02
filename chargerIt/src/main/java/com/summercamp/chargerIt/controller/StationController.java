@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/stations")
+@CrossOrigin
 public class StationController {
 
     @Autowired

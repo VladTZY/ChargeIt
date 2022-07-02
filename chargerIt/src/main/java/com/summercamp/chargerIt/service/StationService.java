@@ -36,6 +36,7 @@ public class StationService {
         return "https://www.google.com/maps/search/?api=1&query=" + station.getLocationDetails().getLatitude() + "%2C" + station.getLocationDetails().getLongitude();
     }
 
+
     public Station getStationFromDto(StationDto stationDto) {
         Station station = new Station(stationDto.getName(), stationDto.getLocation(), stationDto.isOpen());
         StationType stationType = stationTypeService.getStationTypeById(stationDto.getStationTypeId());
