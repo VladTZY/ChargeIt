@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import NextLink from 'next/link'
 import { useState, useEffect } from "react";
 
 import {
@@ -12,6 +12,8 @@ import {
     Td,
     TableCaption,
     TableContainer,
+    VStack,
+    Button
   } from '@chakra-ui/react'
 import StationTableRow from '../../components/StationTableRow';
 
@@ -23,8 +25,12 @@ const Stations = () => {
     }, [])
 
     return (
-        <div>
-            <TableContainer>
+        <VStack>
+            <NextLink href="/stations/add">
+                <Button mt="24px" colorScheme="blue">Add new station</Button>
+            </NextLink>
+            
+            <TableContainer pt="50px" width="100%">
                 <Table variant="simple">
                     <TableCaption>Electric charging stations</TableCaption>
                     
@@ -44,7 +50,7 @@ const Stations = () => {
 
                 </Table>
             </TableContainer>
-        </div>
+        </VStack>
     )
 }
 

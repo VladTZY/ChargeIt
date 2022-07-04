@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/station_types")
+@CrossOrigin
 public class StationTypeController {
 
     @Autowired

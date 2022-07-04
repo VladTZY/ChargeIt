@@ -8,6 +8,8 @@ import com.summercamp.chargerIt.models.StationType;
 import com.summercamp.chargerIt.repo.LocationDetailsRepo;
 import com.summercamp.chargerIt.repo.StationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +61,12 @@ public class StationService {
         Station newStation = getStationFromDto(newStationDto);
 
         return stationRepo.save(newStation);
+    }
+
+    public ResponseEntity<String> deleteStation(Long id) {
+        Station station = getStationById(id);
+
+        stationRepo.deleteById(id);
+        return new ResponseEntity<>("Station deleted", HttpStatus.OK);
     }
 }

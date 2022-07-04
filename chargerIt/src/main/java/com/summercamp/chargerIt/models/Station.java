@@ -23,7 +23,7 @@ public class Station {
     @Column(name = "location")
     private String location;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_details_id", referencedColumnName = "id")
     private LocationDetails locationDetails;
 
