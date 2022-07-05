@@ -4,6 +4,7 @@ import com.summercamp.chargerIt.dto.BookingDto;
 import com.summercamp.chargerIt.models.Booking;
 import com.summercamp.chargerIt.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,4 +27,10 @@ public class BookingController {
     public Booking addBooking(@RequestBody BookingDto newBookingDto) {
         return bookingService.addBooking(newBookingDto);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
+        return bookingService.deleteBooking(id);
+    }
+
 }

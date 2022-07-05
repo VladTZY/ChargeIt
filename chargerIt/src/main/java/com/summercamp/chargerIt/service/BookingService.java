@@ -6,6 +6,9 @@ import com.summercamp.chargerIt.models.Booking;
 import com.summercamp.chargerIt.models.Station;
 import com.summercamp.chargerIt.repo.BookingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +48,12 @@ public class BookingService {
         Booking newBooking = getBookingFromDto(newBookingDto);
 
         return bookingRepo.save(newBooking);
+    }
+
+    public ResponseEntity<String> deleteBooking(Long id) {
+        Booking booking = getBookingById(id);
+
+        bookingRepo.deleteById(id);
+        return new ResponseEntity<>("Booking deleted", HttpStatus.OK);
     }
 }
