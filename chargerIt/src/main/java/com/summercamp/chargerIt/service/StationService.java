@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -68,5 +69,21 @@ public class StationService {
 
         stationRepo.deleteById(id);
         return new ResponseEntity<>("Station deleted", HttpStatus.OK);
+    }
+
+    @Transactional
+    public Station updateStation(Long id, StationDto updatedStation) {
+        Station station = getStationById(id);
+        LocationDetails locationDetails = station.getLocationDetails();
+
+        station.setName(updatedStation.getName());
+        station.setLocation(updatedStation.getLocation());
+        station.setOpen(updatedStation.isOpen());
+        locationDetails.setCountry(updatedStation.getCountry());
+        locationDetails.setCity(updatedStation.getCity());
+        locationDetails.setLatitude(updatedStation.getLatitude());
+        locationDetails.setLongitude(updatedStation.getLongitude());
+
+        return station;
     }
 }
