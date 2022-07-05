@@ -17,9 +17,10 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping
-    public List<Booking> getBookings() {
-        return bookingService.getBookings();
-    }
+    public List<Booking> getBookings() { return bookingService.getBookings(); }
+
+    @GetMapping("/{id}")
+    public Booking getBookingById(@PathVariable Long id) { return bookingService.getBookingById(id); }
 
     @PostMapping("/add")
     public Booking addBooking(@RequestBody BookingDto newBookingDto) {
