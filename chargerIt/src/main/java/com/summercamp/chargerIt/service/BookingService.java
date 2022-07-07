@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +25,6 @@ public class BookingService {
     @Autowired
     private StationService stationService;
 
-    @Autowired
-    private DateTimeService dateTimeService;
-
     public List<Booking> getBookings() {
         return bookingRepo.findAll();
     }
@@ -36,9 +34,6 @@ public class BookingService {
     }
 
         public Booking getBookingFromDto(BookingDto bookingDto) {
-
-        //Date startDate = dateTimeService.getDateFromDateTime(bookingDto.getStartDateTime());
-        //Date startTime = dateTimeService.getTimeFromDateTime(bookingDto.getStartDateTime());
 
         Booking booking = new Booking(
                 bookingDto.getUserName(),
@@ -72,5 +67,23 @@ public class BookingService {
 
         bookingRepo.deleteById(id);
         return new ResponseEntity<>("Booking deleted", HttpStatus.OK);
+    }
+
+    @Transactional
+    public Booking updateBooking(Long id, BookingDto updatedBookingDto) {
+        Booking booking = getBookingById(id);
+
+        if (updatedBookingDto.getStationId() != null) {
+            Station updateStation = stationService.getStationById(updatedBookingDto.getStationId());
+            booking.setStation(updateStation);
+        }
+
+        booking.setUserName(updatedBookingDto.getUserName());
+        booking.setCarLicense(updatedBookingDto.getCarLicense());
+        booking.setDuration(updatedBookingDto.getDuration());
+        booking.setStartDate(updatedBookingDto.getStartDate());
+        booking.setStartTime(updatedBookingDto.getStartTime());
+
+        return booking;
     }
 }

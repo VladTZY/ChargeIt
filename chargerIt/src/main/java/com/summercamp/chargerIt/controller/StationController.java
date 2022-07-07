@@ -33,6 +33,11 @@ public class StationController {
         return stationService.getLocationUrl(id);
     }
 
+    @GetMapping("/name/{name}")
+    public Station getStationByName(@PathVariable String name) {
+        return stationService.getStationByName(name);
+    }
+
     @PostMapping(value = "/add")
     public Station addStation(@RequestBody StationDto newStationDto) {
         return stationService.addStation(newStationDto);

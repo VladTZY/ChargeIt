@@ -39,6 +39,11 @@ public class StationService {
         return "https://www.google.com/maps/search/?api=1&query=" + station.getLocationDetails().getLatitude() + "%2C" + station.getLocationDetails().getLongitude();
     }
 
+    public Station getStationByName(String name) {
+        String fullName = name.replace("_", " ");
+
+        return stationRepo.findByName(fullName);
+    }
 
     public Station getStationFromDto(StationDto stationDto) {
         Station station = new Station(stationDto.getName(), stationDto.getLocation(), stationDto.isOpen());
