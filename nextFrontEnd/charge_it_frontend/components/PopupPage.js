@@ -1,13 +1,20 @@
-import { Box, VStack, Text } from '@chakra-ui/react'
+import { Box, VStack, Text, Button } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { Icon } from "@chakra-ui/react"
+import { useEffect, useState } from 'react'
+import Moment from 'moment'
+import axios from 'axios'
 
-const PopupPage = ({ name, date, onClose }) => {
+const PopupPage = ({ stationId, name, date, onClose }) => {
+    const [bookings, setBookings] = useState([]);
+    const [firstClicked, setFirstClicked] = useState(null);
+    const [lastClicked, setLastClicked] = useState(null);
+    const [clickedCount, setClickedCount] = useState(0);
 
     const hours = [
         "00:00", "00:30",
-        "01:00", "00:30",
-        "02:00", "01:30",
+        "01:00", "01:30",
+        "02:00", "02:30",
         "03:00", "03:30",
         "04:00", "04:30",
         "05:00", "05:30",
@@ -30,17 +37,47 @@ const PopupPage = ({ name, date, onClose }) => {
         "22:00", "22:30",
         "23:00", "23:30",
     ];
-    
+
+    useEffect(() => {
+        const formatedDate = Moment(date).format("yyyy-MM-DD")
+        axios.get(`http://localhost:8090/api/bookings/date/${formatedDate}/station/${stationId}`).then(res => setBookings(res.data))
+    }, [stationId])
+
+    const hourClicked = (id) => {
+        
+        if (firstClicked == null) {
+            
+            setFirstClicked(id);
+            setLastClicked(id);
+            setClickedCount(1);
+
+            return ;
+        }
+
+        if (id == lastClicked + 1) {
+
+            setLastClicked(id);
+            setClickedCount(clickedCount + 1);
+        
+            return;
+        }
+
+        setFirstClicked(id);
+        setLastClicked(id);
+        setClickedCount(1);
+    }    
+
     return (
         <Box background="gray.300" minWidth="400px">
             <VStack>
                 <Icon marginTop="16px" onClick={onClose} cursor="pointer" as={CloseIcon} />
                 <Text>{name}</Text>
-                <Box overflowY="scroll" maxHeight="360px" minWidth="400px">
-                    {hours.map((hour) => 
-                    (<Text align="center">{hour}</Text>)
+                <VStack overflowY="scroll" maxHeight="360px" minWidth="400px">
+                    {hours.map((hour, index) => 
+                    (<Button colorScheme={(firstClicked != null && index >= firstClicked && index <= lastClicked) ? "blue" : "gray"} key={index} align="center" onClick={() => hourClicked(index)}>{hour}</Button>)
                     )}
-                </Box>
+                </VStack>
+                <Button colorScheme="blue">Make appointment</Button>
             </VStack>
         </Box>
     )

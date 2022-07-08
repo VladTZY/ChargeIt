@@ -23,29 +23,20 @@ public class Booking {
     @Column(name = "car_license")
     private String carLicense;
 
-    //@Column(name = "start_date_time")
-    //@Temporal(TemporalType.TIMESTAMP)
-    //private Date startDateTime;
-
     @Column(name = "start_date")
-    @Temporal(TemporalType.DATE)
-    Date startDate;
+    private LocalDateTime startDateTime;
 
-    @Column(name="start_time")
-    @Temporal(TemporalType.TIME)
-    Date startTime;
-    @Column(name = "duration")
-    private int duration;
+    @Column(name = "end_date")
+    private LocalDateTime endDateTime;
 
     @ManyToOne
     @JoinColumn(name = "station_id", referencedColumnName = "id")
     private Station station;
 
-    public Booking(String userName, String carLicense, Date startDate, Date startTime, int duration) {
+    public Booking(String userName, String carLicense, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.userName = userName;
         this.carLicense = carLicense;
-        this.startDate = startDate;
-        this.startTime = startTime;
-        this.duration = duration;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
 }

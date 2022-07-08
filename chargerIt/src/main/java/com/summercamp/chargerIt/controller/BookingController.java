@@ -25,9 +25,10 @@ public class BookingController {
     @GetMapping("/{id}")
     public Booking getBookingById(@PathVariable Long id) { return bookingService.getBookingById(id); }
 
-    @GetMapping("/date/{startDateTime}")
-    @SneakyThrows
-    public List<Booking> getBookingByDate(@PathVariable String startDateTime) { return bookingService.getBookingByDate(startDateTime); }
+    @GetMapping("date/{date}/station/{stationId}")
+    public List<Booking> getBookingByDateAndStation(@PathVariable String date, @PathVariable Long stationId) {
+        return bookingService.getBookingsByDateAndStation(date, stationId);
+    }
 
     @PostMapping("/add")
     public Booking addBooking(@RequestBody BookingDto newBookingDto) {

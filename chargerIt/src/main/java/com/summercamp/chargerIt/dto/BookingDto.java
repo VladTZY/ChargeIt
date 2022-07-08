@@ -2,7 +2,7 @@ package com.summercamp.chargerIt.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class BookingDto {
@@ -10,11 +10,8 @@ public class BookingDto {
     private String userName;
     private String carLicense;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
-
-    @JsonFormat(pattern = "HH:mm")
-    private Date startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd:HH:mm")
+    private LocalDateTime startDateTime;
 
     private int duration;
     private Long stationId;

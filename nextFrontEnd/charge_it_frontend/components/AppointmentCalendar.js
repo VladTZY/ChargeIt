@@ -27,7 +27,7 @@ const AppointmentCalendar = ({ name, id }) => {
         <div>
             <Calendar onClickDay={(value) => selectBookingDay(value)}/>
             <Popup open={popupIsOpen} onClose={closePopup}>
-                <PopupPage name={name} date={date} onClose={closePopup}/>
+                <PopupPage stationId={id} name={name} date={date} onClose={closePopup}/>
             </Popup>
         </div>
     )

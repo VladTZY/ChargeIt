@@ -5,9 +5,9 @@ import com.summercamp.chargerIt.exception.NotFoundException;
 import com.summercamp.chargerIt.models.LocationDetails;
 import com.summercamp.chargerIt.models.Station;
 import com.summercamp.chargerIt.models.StationType;
-import com.summercamp.chargerIt.repo.LocationDetailsRepo;
 import com.summercamp.chargerIt.repo.StationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -90,5 +90,13 @@ public class StationService {
         locationDetails.setLongitude(updatedStation.getLongitude());
 
         return station;
+    }
+
+    public List<Station> getSortedStations(String field, boolean isDesc) {
+
+        if (!isDesc)
+            return stationRepo.findAll(Sort.by(Sort.Direction.ASC, field));
+
+        return stationRepo.findAll(Sort.by(Sort.Direction.DESC, field));
     }
 }

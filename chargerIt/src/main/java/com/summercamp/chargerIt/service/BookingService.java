@@ -6,6 +6,7 @@ import com.summercamp.chargerIt.models.Booking;
 import com.summercamp.chargerIt.models.Station;
 import com.summercamp.chargerIt.repo.BookingRepo;
 import lombok.SneakyThrows;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -33,14 +37,13 @@ public class BookingService {
         return bookingRepo.findById(id).orElseThrow(() -> { return new NotFoundException("Id not found"); });
     }
 
-        public Booking getBookingFromDto(BookingDto bookingDto) {
+    public Booking getBookingFromDto(BookingDto bookingDto) {
 
         Booking booking = new Booking(
                 bookingDto.getUserName(),
                 bookingDto.getCarLicense(),
-                bookingDto.getStartDate(),
-                bookingDto.getStartTime(),
-                bookingDto.getDuration()
+                bookingDto.getStartDateTime(),
+                bookingDto.getStartDateTime().plusMinutes(bookingDto.getDuration())
         );
         Station station = stationService.getStationById(bookingDto.getStationId());
 
@@ -49,14 +52,17 @@ public class BookingService {
         return booking;
     }
 
-    @SneakyThrows
-    public List<Booking> getBookingByDate(String startDateTime) {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(startDateTime);
-
-        return bookingRepo.findAllBookingByStartDate(date);
-    }
-
     public Booking addBooking(BookingDto newBookingDto) {
+        Station station = stationService.getStationById(newBookingDto.getStationId());
+        List<Booking> bookings = bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBefore(
+                station,
+                newBookingDto.getStartDateTime(),
+                newBookingDto.getStartDateTime().plusMinutes(newBookingDto.getDuration())
+        );
+
+        if (bookings.size() > 0)
+            throw new RuntimeException("Overlap");
+
         Booking newBooking = getBookingFromDto(newBookingDto);
 
         return bookingRepo.save(newBooking);
@@ -80,10 +86,23 @@ public class BookingService {
 
         booking.setUserName(updatedBookingDto.getUserName());
         booking.setCarLicense(updatedBookingDto.getCarLicense());
-        booking.setDuration(updatedBookingDto.getDuration());
-        booking.setStartDate(updatedBookingDto.getStartDate());
-        booking.setStartTime(updatedBookingDto.getStartTime());
+        booking.setStartDateTime(updatedBookingDto.getStartDateTime());
+        booking.setEndDateTime(updatedBookingDto.getStartDateTime().plusMinutes(updatedBookingDto.getDuration()));
 
         return booking;
+    }
+
+    public List<Booking> getBookingsByDateAndStation(String date, Long stationId) {
+        Station station = stationService.getStationById(stationId);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime startOfDayDateTime = LocalDate.parse(date, formatter).atStartOfDay();
+        LocalDateTime endOfDatDateTime = LocalDate.parse(date, formatter).atStartOfDay().plusMinutes(1439);
+
+        return bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBefore(
+                station,
+                startOfDayDateTime,
+                endOfDatDateTime
+        );
     }
 }
