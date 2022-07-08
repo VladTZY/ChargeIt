@@ -8,6 +8,7 @@ import com.summercamp.chargerIt.repo.BookingRepo;
 import lombok.SneakyThrows;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class BookingService {
 
     public Booking addBooking(BookingDto newBookingDto) {
         Station station = stationService.getStationById(newBookingDto.getStationId());
-        List<Booking> bookings = bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBefore(
+        List<Booking> bookings = bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBeforeOrderByStartDateTime(
                 station,
                 newBookingDto.getStartDateTime(),
                 newBookingDto.getStartDateTime().plusMinutes(newBookingDto.getDuration())
@@ -99,7 +100,7 @@ public class BookingService {
         LocalDateTime startOfDayDateTime = LocalDate.parse(date, formatter).atStartOfDay();
         LocalDateTime endOfDatDateTime = LocalDate.parse(date, formatter).atStartOfDay().plusMinutes(1439);
 
-        return bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBefore(
+        return bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBeforeOrderByStartDateTime(
                 station,
                 startOfDayDateTime,
                 endOfDatDateTime

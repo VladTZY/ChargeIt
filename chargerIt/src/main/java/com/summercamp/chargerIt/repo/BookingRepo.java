@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface BookingRepo extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByStationAndEndDateTimeAfterAndStartDateTimeBefore(
+    List<Booking> findByStationAndEndDateTimeAfterAndStartDateTimeBeforeOrderByStartDateTime(
             Station station,
             LocalDateTime startDateTime,
             LocalDateTime endDateTime
