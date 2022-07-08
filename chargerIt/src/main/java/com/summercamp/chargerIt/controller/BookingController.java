@@ -26,7 +26,7 @@ public class BookingController {
     public Booking getBookingById(@PathVariable Long id) { return bookingService.getBookingById(id); }
 
     @GetMapping("date/{date}/station/{stationId}")
-    public List<Booking> getBookingByDateAndStation(@PathVariable String date, @PathVariable Long stationId) {
+    public List<BookingDto> getBookingByDateAndStation(@PathVariable String date, @PathVariable Long stationId) {
         return bookingService.getBookingsByDateAndStation(date, stationId);
     }
 

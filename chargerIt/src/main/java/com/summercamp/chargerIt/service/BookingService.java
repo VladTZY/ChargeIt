@@ -5,20 +5,17 @@ import com.summercamp.chargerIt.exception.NotFoundException;
 import com.summercamp.chargerIt.models.Booking;
 import com.summercamp.chargerIt.models.Station;
 import com.summercamp.chargerIt.repo.BookingRepo;
-import lombok.SneakyThrows;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,7 +50,21 @@ public class BookingService {
         return booking;
     }
 
+    public BookingDto getDtoFromBooking(Booking booking) {
+
+        BookingDto bookingDto = new BookingDto(
+                booking.getUserName(),
+                booking.getCarLicense(),
+                booking.getStartDateTime(),
+                (int) Duration.between(booking.getStartDateTime(), booking.getEndDateTime()).toMinutes(),
+                booking.getStation().getId()
+        );
+
+        return bookingDto;
+    }
+
     public Booking addBooking(BookingDto newBookingDto) {
+        System.out.println(newBookingDto);
         Station station = stationService.getStationById(newBookingDto.getStationId());
         List<Booking> bookings = bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBeforeOrderByStartDateTime(
                 station,
@@ -93,17 +104,24 @@ public class BookingService {
         return booking;
     }
 
-    public List<Booking> getBookingsByDateAndStation(String date, Long stationId) {
+    public List<BookingDto> getBookingsByDateAndStation(String date, Long stationId) {
         Station station = stationService.getStationById(stationId);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime startOfDayDateTime = LocalDate.parse(date, formatter).atStartOfDay();
         LocalDateTime endOfDatDateTime = LocalDate.parse(date, formatter).atStartOfDay().plusMinutes(1439);
 
-        return bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBeforeOrderByStartDateTime(
+        List<BookingDto> bookingDtos = new ArrayList<>();
+        List<Booking> bookings = bookingRepo.findByStationAndEndDateTimeAfterAndStartDateTimeBeforeOrderByStartDateTime(
                 station,
                 startOfDayDateTime,
                 endOfDatDateTime
         );
+
+        bookings.forEach(booking -> {
+            bookingDtos.add(getDtoFromBooking(booking));
+        });
+
+        return bookingDtos;
     }
 }
