@@ -4,18 +4,15 @@ import Moment from "moment";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { Link, Text, useDisclosure } from "@chakra-ui/react";
+import { Link, Text } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
 	Modal,
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
-	ModalFooter,
-	ModalBody,
 	ModalCloseButton,
-	Button,
-	Lorem,
+	Container,
 } from "@chakra-ui/react";
 
 import AppointmentCalendar from "../../components/AppointmentCalendar";
@@ -49,14 +46,17 @@ export const StationPage = ({ ssrStation, ssrLocationUrl }) => {
 	};
 
 	return (
-		<div>
+		<Container pt={2} maxW="100%">
 			<Text align="center">{station.name}</Text>
 			<Text align="center">{station.location}</Text>
 			<Link href={locationUrl} isExternal>
 				{" "}
 				See the location on maps <ExternalLinkIcon />{" "}
 			</Link>
-			<AppointmentCalendar setDate={setDate} onOpen={openModal} />
+
+			<Container maxW="container.md">
+				<AppointmentCalendar setDate={setDate} onOpen={openModal} />
+			</Container>
 
 			<Modal isOpen={isModalOpen} onClose={closeModal}>
 				<ModalOverlay />
@@ -72,7 +72,7 @@ export const StationPage = ({ ssrStation, ssrLocationUrl }) => {
 					/>
 				</ModalContent>
 			</Modal>
-		</div>
+		</Container>
 	);
 };
 

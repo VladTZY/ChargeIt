@@ -1,66 +1,99 @@
-import React from 'react'
-import NextLink from 'next/link'
+import React from "react";
+import NextLink from "next/link";
 
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 
-import { 
-    Text, 
-    Button, 
-    HStack, 
-    Menu, 
-    MenuButton, 
-    MenuList, 
-    MenuItem, 
-    Box
-} from '@chakra-ui/react'
+import {
+	Text,
+	Button,
+	Container,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	Box,
+	Flex,
+} from "@chakra-ui/react";
 
 export const Navbar = () => {
-  return (
-    <HStack backgroundColor="blue.400">
-        <Text>ChargeIt</Text>
-        
-        <Box display={{base: "none", md: "flex"}}>
-            <NextLink href="/">
-                    <Button href="/">Home</Button>
-            </NextLink>
+	return (
+		<Box w="100%" position="fixed" backgroundColor="blue.400">
+			<Container
+				display="flex"
+				p={2}
+				maxW="100%"
+				wrap="wrap"
+				align="center"
+				justify="space-between"
+			>
+				<Flex align="center" mr={2}>
+					<Text pl={2} fontSize="32px">
+						ChargeIt
+					</Text>
+				</Flex>
 
-            <Menu>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>Stations</MenuButton>
-                
-                <MenuList>
-                    <MenuItem>
-                        <NextLink href="/stations">All stations</NextLink>
-                    </MenuItem>
+				<Box x flex={1} align="right">
+					<Box display={{ base: "none", md: "inline-block" }}>
+						<NextLink href="/">
+							<Button colorScheme="blue" mr={2} href="/">
+								Home
+							</Button>
+						</NextLink>
 
-                    <MenuItem>
-                        <NextLink href="/stations/add">Add stations</NextLink>
-                    </MenuItem>
-                </MenuList>
-            </Menu>
-        </Box>
+						<Menu>
+							<MenuButton
+								colorScheme="blue"
+								as={Button}
+								rightIcon={<ChevronDownIcon />}
+							>
+								Stations
+							</MenuButton>
 
-        <Box display={{base: "flex", md: "none"}}>
-            <Menu>
-                <MenuButton as={Button}>V</MenuButton>
+							<MenuList>
+								<MenuItem>
+									<NextLink href="/stations">
+										All stations
+									</NextLink>
+								</MenuItem>
 
-                <MenuList>
-                    <MenuItem>
-                        <NextLink href="/">Home</NextLink>
-                    </MenuItem>
+								<MenuItem>
+									<NextLink href="/stations/add">
+										Add stations
+									</NextLink>
+								</MenuItem>
+							</MenuList>
+						</Menu>
+					</Box>
+				</Box>
 
-                    <MenuItem>
-                            <NextLink href="/stations">All stations</NextLink>
-                    </MenuItem>
+				<Box display={{ base: "flex", md: "none" }}>
+					<Menu>
+						<MenuButton colorScheme="blue" as={Button}>
+							<HamburgerIcon />
+						</MenuButton>
 
-                    <MenuItem>
-                        <NextLink href="/stations/add">Add stations</NextLink>
-                    </MenuItem>
-                </MenuList>
-            </Menu>
-        </Box>
+						<MenuList>
+							<MenuItem>
+								<NextLink href="/">Home</NextLink>
+							</MenuItem>
 
-    </HStack>
-  )
-}
+							<MenuItem>
+								<NextLink href="/stations">
+									All stations
+								</NextLink>
+							</MenuItem>
+
+							<MenuItem>
+								<NextLink href="/stations/add">
+									Add stations
+								</NextLink>
+							</MenuItem>
+						</MenuList>
+					</Menu>
+				</Box>
+			</Container>
+		</Box>
+	);
+};
 
 export default Navbar;
