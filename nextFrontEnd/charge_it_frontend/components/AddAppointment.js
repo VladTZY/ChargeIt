@@ -4,12 +4,11 @@ import axios from "axios";
 
 import {
 	Button,
-	useDisclosure,
+	FormControl,
 	Input,
 	FormLabel,
 	Text,
-} from "@chakra-ui/react";
-import {
+	FormErrorMessage,
 	Drawer,
 	DrawerBody,
 	DrawerFooter,
@@ -29,14 +28,24 @@ const AddAppointment = ({
 	const btnRef = useRef();
 
 	const [isDrawerOpen, setDrawerOpen] = useState(false);
-	const [userName, setUserName] = useState();
-	const [carLicense, setCarLicense] = useState();
+	const [userName, setUserName] = useState("");
+	const [carLicense, setCarLicense] = useState("");
+
+	const [nameError, setNameError] = useState(false);
+	const [carLicenseError, setCarLicenseError] = useState(false);
 
 	const openDrawer = () => {
 		setDrawerOpen(true);
 	};
 	const closeDrawer = () => {
 		setDrawerOpen(false);
+	};
+
+	const validateForm = () => {
+		setNameError(userName == "" ? true : false);
+		setCarLicenseError(carLicense == "" ? true : false);
+
+		if (!(userName == "" || carLicense == "")) makeAppointment();
 	};
 
 	const makeAppointment = () => {
@@ -82,19 +91,32 @@ const AddAppointment = ({
 					<DrawerHeader>Make appointment</DrawerHeader>
 
 					<DrawerBody>
-						<FormLabel>Name</FormLabel>
-						<Input
-							placeholder="Type here..."
-							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
-						/>
+						<FormControl isInvalid={nameError} isRequired="true">
+							<FormLabel>Name</FormLabel>
+							<Input
+								placeholder="Type here..."
+								value={userName}
+								onChange={(e) => setUserName(e.target.value)}
+							/>
+							<FormErrorMessage>
+								Name is required
+							</FormErrorMessage>
+						</FormControl>
 
-						<FormLabel pt="16px">Car License Number</FormLabel>
-						<Input
-							placeholder="Type here..."
-							value={carLicense}
-							onChange={(e) => setCarLicense(e.target.value)}
-						/>
+						<FormControl
+							isInvalid={carLicenseError}
+							isRequired="true"
+						>
+							<FormLabel pt="16px">Car License Number</FormLabel>
+							<Input
+								placeholder="Type here..."
+								value={carLicense}
+								onChange={(e) => setCarLicense(e.target.value)}
+							/>
+							<FormErrorMessage>
+								Car license number is required
+							</FormErrorMessage>
+						</FormControl>
 
 						<FormLabel pt="16px">Date</FormLabel>
 						<Text>{Moment(date).format("yyyy-MM-DD")}</Text>
@@ -110,7 +132,7 @@ const AddAppointment = ({
 						<Button variant="outline" mr={3} onClick={closeModal}>
 							Cancel
 						</Button>
-						<Button colorScheme="blue" onClick={makeAppointment}>
+						<Button colorScheme="blue" onClick={validateForm}>
 							Save
 						</Button>
 					</DrawerFooter>

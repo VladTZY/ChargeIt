@@ -46,8 +46,6 @@ const ModalPage = ({ stationId, date, closeModal }) => {
 			});
 	}, [stationId]);
 
-	console.log(firstClicked, lastClicked);
-
 	return (
 		<ModalBody>
 			<HoursAppointment
