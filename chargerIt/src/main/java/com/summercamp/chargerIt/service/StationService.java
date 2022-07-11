@@ -99,4 +99,9 @@ public class StationService {
 
         return stationRepo.findAll(Sort.by(Sort.Direction.DESC, field));
     }
+
+    public List<Station> getStationBySearch(String searchValue) {
+
+        return stationRepo.findByNameContainsOrLocationContains(searchValue, searchValue);
+    }
 }

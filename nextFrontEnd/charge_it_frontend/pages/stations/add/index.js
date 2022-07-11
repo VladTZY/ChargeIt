@@ -79,6 +79,7 @@ export const addSation = () => {
 				<FormControl isInvalid={nameError} isRequired="true">
 					<FormLabel>Name</FormLabel>
 					<Input
+						placeholder="Type here..."
 						id="name"
 						value={name}
 						onChange={(e) => setName(e.target.value)}
@@ -89,6 +90,7 @@ export const addSation = () => {
 				<FormControl isInvalid={locationError} isRequired="true">
 					<FormLabel>Location</FormLabel>
 					<Input
+						placeholder="Type here..."
 						id="location"
 						value={location}
 						onChange={(e) => setLocation(e.target.value)}
@@ -99,6 +101,7 @@ export const addSation = () => {
 				<FormControl isInvalid={countryError} isRequired="true">
 					<FormLabel>Country</FormLabel>
 					<Input
+						placeholder="Type here..."
 						id="country"
 						value={country}
 						onChange={(e) => setCountry(e.target.value)}
@@ -109,6 +112,7 @@ export const addSation = () => {
 				<FormControl isInvalid={cityError} isRequired="true">
 					<FormLabel>City</FormLabel>
 					<Input
+						placeholder="Type here..."
 						id="city"
 						value={city}
 						onChange={(e) => setCity(e.target.value)}

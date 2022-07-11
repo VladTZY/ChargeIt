@@ -43,6 +43,9 @@ public class StationController {
         return stationService.getStationByName(name);
     }
 
+    @GetMapping("/search/{searchValue}")
+    public List<Station> getStationBySearch(@PathVariable String searchValue) { return stationService.getStationBySearch(searchValue); }
+
     @PostMapping(value = "/add")
     public Station addStation(@RequestBody StationDto newStationDto) {
         return stationService.addStation(newStationDto);
