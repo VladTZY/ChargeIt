@@ -17,7 +17,7 @@ import {
 
 export const Navbar = () => {
 	return (
-		<Box w="100%" position="fixed" backgroundColor="blue.400">
+		<Box zIndex={2} w="100%" position="fixed" backgroundColor="blue.400">
 			<Container
 				display="flex"
 				p={2}
