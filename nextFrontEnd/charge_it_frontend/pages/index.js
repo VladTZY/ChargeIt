@@ -1,9 +1,10 @@
 import { Container, Text, Button, VStack } from "@chakra-ui/react";
+import MapsGoogle from "../components/MapsGoogle";
 import NextLink from "next/link";
 import dynamic from "next/dynamic";
 
 export default function Home({ ssrStations }) {
-	const Map = dynamic(() => import("../components/Map"), { ssr: false });
+	//const Map = dynamic(() => import("../components/Map"), { ssr: false });
 
 	return (
 		<Container maxW="100%">
@@ -13,10 +14,12 @@ export default function Home({ ssrStations }) {
 			<NextLink href={"/stations"}>
 				<Button colorScheme="blue">See all stations</Button>
 			</NextLink>
-			<Map ssrStations={ssrStations} />
+			<MapsGoogle ssrStations={ssrStations} />
 		</Container>
 	);
 }
+
+//<Map ssrStations={ssrStations} />
 
 export async function getServerSideProps() {
 	const res = await fetch("http://localhost:8090/api/stations");
