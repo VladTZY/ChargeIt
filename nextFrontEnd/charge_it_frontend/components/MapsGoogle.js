@@ -6,7 +6,7 @@ import StationMarkerGoogle from "./StationMarkerGoogle";
 import { Container } from "@chakra-ui/react";
 
 const containerStyle = {
-	width: "75vw",
+	width: "100%",
 	height: "75vh",
 };
 
@@ -41,9 +41,9 @@ const MapsGoogle = ({ ssrStations }) => {
 				>
 					<>
 						{stations.map((station) => {
-							console.log(station);
 							return (
 								<StationMarkerGoogle
+									key={station.id}
 									lat={station.locationDetails.latitude}
 									lng={station.locationDetails.longitude}
 									stationId={station.id}

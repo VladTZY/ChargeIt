@@ -1,7 +1,6 @@
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-
+import axios from "axios";
 import {
 	FormControl,
 	FormLabel,
@@ -11,18 +10,26 @@ import {
 	Button,
 	Select,
 	Text,
+	Checkbox,
 } from "@chakra-ui/react";
 
-export const addSation = () => {
+const UpdateStation = ({ ssrStation, ssrStationTypes }) => {
+	const [station, setStation] = useState(ssrStation);
+	const [stationTypes, setStationTypes] = useState(ssrStationTypes);
 	const router = useRouter();
 
-	const [name, setName] = useState("");
-	const [location, setLocation] = useState("");
-	const [country, setCountry] = useState("");
-	const [city, setCity] = useState("");
-	const [latitude, setLatitude] = useState(0.0);
-	const [longitude, setLongitude] = useState(0.0);
-	const [stationTypeId, setStationTypeId] = useState(-1);
+	const [name, setName] = useState(station.name);
+	const [location, setLocation] = useState(station.location);
+	const [isOpen, setOpen] = useState(station.open);
+	const [country, setCountry] = useState(station.locationDetails.country);
+	const [city, setCity] = useState(station.locationDetails.city);
+	const [latitude, setLatitude] = useState(station.locationDetails.latitude);
+	const [longitude, setLongitude] = useState(
+		station.locationDetails.longitude
+	);
+	const [stationTypeId, setStationTypeId] = useState(station.stationType.id);
+
+	console.log(station.open);
 
 	const [nameError, setNameError] = useState(false);
 	const [locationError, setLocationError] = useState(false);
@@ -30,13 +37,14 @@ export const addSation = () => {
 	const [cityError, setCityError] = useState(false);
 	const [stationTypeIdError, setStationTypeIdError] = useState(false);
 
-	const [stationTypes, setStationTypes] = useState([]);
-
 	useEffect(() => {
+		axios
+			.get(`http://localhost:8090/api/stations/${router.query.id}`)
+			.then((res) => setStation(res.data));
 		axios
 			.get("http://localhost:8090/api/station_types")
 			.then((res) => setStationTypes(res.data));
-	}, []);
+	}, [router.query.id]);
 
 	const validateForm = () => {
 		setNameError(name == "" ? true : false);
@@ -54,33 +62,37 @@ export const addSation = () => {
 				stationTypeIdError == -1
 			)
 		)
-			postNewStation();
+			updateStation();
 	};
 
-	const postNewStation = () => {
-		const newStation = {
+	const updateStation = () => {
+		const updateStation = {
 			name,
 			location,
-			opne: true,
-			country,
-			city,
+			open: isOpen,
 			latitude,
 			longitude,
+			country,
+			city,
 			stationTypeId,
 		};
 
+		console.log(stationTypeId);
+
 		axios
-			.post("http://localhost:8090/api/stations/add", newStation)
+			.put(
+				`http://localhost:8090/api/stations/update/${router.query.id}`,
+				updateStation
+			)
 			.then((res) => router.push("/stations"));
 	};
 
 	return (
 		<Box display="flex" justifyContent="center">
 			<Box mt="24px" width="33%">
-				<Text align="center" fontSize="3xl" pb={4} pt={2}>
-					Add a new station
+				<Text align="center" fontSize="3xl" pb={6} pt={2}>
+					Update station informations for station {station.name}
 				</Text>
-
 				<FormControl isInvalid={nameError} isRequired="true">
 					<FormLabel>Name</FormLabel>
 					<Input
@@ -156,17 +168,47 @@ export const addSation = () => {
 					</FormErrorMessage>
 				</FormControl>
 
+				<FormControl>
+					<FormLabel>Is open</FormLabel>
+					<Checkbox
+						isChecked={isOpen}
+						onChange={(e) => setOpen(e.target.checked)}
+					>
+						Is open
+					</Checkbox>
+				</FormControl>
+
 				<Button
+					mb={10}
 					width="100%"
 					onClick={validateForm}
 					mt="10px"
 					colorScheme="blue"
 				>
-					Add
+					Update
 				</Button>
 			</Box>
 		</Box>
 	);
 };
 
-export default addSation;
+export default UpdateStation;
+
+export const getServerSideProps = async (context) => {
+	const id = context.params.id;
+	const stationRes = await axios.get(
+		`http://localhost:8090/api/stations/${id}`
+	);
+	const stationData = stationRes.data;
+	const stationTypesRes = await axios.get(
+		"http://localhost:8090/api/station_types"
+	);
+	const stationTypesData = stationTypesRes.data;
+
+	return {
+		props: {
+			ssrStation: stationData,
+			ssrStationTypes: stationTypesData,
+		},
+	};
+};

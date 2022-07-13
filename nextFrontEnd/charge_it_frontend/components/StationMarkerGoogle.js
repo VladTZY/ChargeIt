@@ -12,7 +12,7 @@ const StationMarkerGoogle = ({ lat, lng, stationId }) => {
 	return (
 		<Marker
 			position={{ lat: lat, lng: lng }}
-			clickable="true"
+			clickable={true}
 			onClick={redirectToId}
 		/>
 	);

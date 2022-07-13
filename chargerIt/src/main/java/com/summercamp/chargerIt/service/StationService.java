@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -79,6 +80,7 @@ public class StationService {
     @Transactional
     public Station updateStation(Long id, StationDto updatedStation) {
         Station station = getStationById(id);
+        StationType updatedStationType = stationTypeService.getStationTypeById(updatedStation.getStationTypeId());
         LocationDetails locationDetails = station.getLocationDetails();
 
         station.setName(updatedStation.getName());
@@ -88,6 +90,7 @@ public class StationService {
         locationDetails.setCity(updatedStation.getCity());
         locationDetails.setLatitude(updatedStation.getLatitude());
         locationDetails.setLongitude(updatedStation.getLongitude());
+        station.setStationType(updatedStationType);
 
         return station;
     }

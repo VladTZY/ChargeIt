@@ -100,7 +100,6 @@ public class BookingService {
         booking.setCarLicense(updatedBookingDto.getCarLicense());
         booking.setStartDateTime(updatedBookingDto.getStartDateTime());
         booking.setEndDateTime(updatedBookingDto.getStartDateTime().plusMinutes(updatedBookingDto.getDuration()));
-
         return booking;
     }
 

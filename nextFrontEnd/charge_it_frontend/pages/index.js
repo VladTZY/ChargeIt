@@ -1,11 +1,8 @@
 import { Container, Text, Button, VStack } from "@chakra-ui/react";
 import MapsGoogle from "../components/MapsGoogle";
 import NextLink from "next/link";
-import dynamic from "next/dynamic";
 
 export default function Home({ ssrStations }) {
-	//const Map = dynamic(() => import("../components/Map"), { ssr: false });
-
 	return (
 		<Container maxW="100%">
 			<Text align="center" fontSize="5xl">
@@ -18,8 +15,6 @@ export default function Home({ ssrStations }) {
 		</Container>
 	);
 }
-
-//<Map ssrStations={ssrStations} />
 
 export async function getServerSideProps() {
 	const res = await fetch("http://localhost:8090/api/stations");
