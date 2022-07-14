@@ -20,8 +20,8 @@ import {
 } from "@chakra-ui/react";
 import StationTableRow from "../../components/StationTableRow";
 
-const Stations = () => {
-	const [stations, setSations] = useState([]);
+const Stations = ({ ssrStations }) => {
+	const [stations, setSations] = useState(ssrStations);
 	const [searchValue, setSearchValue] = useState("");
 
 	useEffect(() => {
@@ -56,7 +56,7 @@ const Stations = () => {
 					/>
 				</Box>
 
-				<TableContainer pt="50px" width="100%">
+				<TableContainer pt={4} width="100%">
 					<Table variant="simple">
 						<TableCaption>Electric charging stations</TableCaption>
 
@@ -83,6 +83,17 @@ const Stations = () => {
 			</Box>
 		</Container>
 	);
+};
+
+export const getServerSideProps = async () => {
+	const stationsRes = await axios.get(`http://localhost:8090/api/stations`);
+	const stationsData = await stationsRes.data;
+
+	return {
+		props: {
+			ssrStations: stationsData,
+		},
+	};
 };
 
 export default Stations;

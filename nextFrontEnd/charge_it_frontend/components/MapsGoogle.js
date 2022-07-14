@@ -3,11 +3,11 @@ import axios from "axios";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 import StationMarkerGoogle from "./StationMarkerGoogle";
-import { Container } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 const containerStyle = {
 	width: "100%",
-	height: "75vh",
+	height: "70vh",
 };
 
 const MapsGoogle = ({ ssrStations }) => {
@@ -32,7 +32,7 @@ const MapsGoogle = ({ ssrStations }) => {
 	}, []);
 
 	return (
-		<Container maxW="100%" align="center" pt={12} pb={4}>
+		<Box maxW="100%" align="center" pt={6} pb={4}>
 			<LoadScript
 				googleMapsApiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY_BOGDAN}
 			>
@@ -55,7 +55,7 @@ const MapsGoogle = ({ ssrStations }) => {
 					</>
 				</GoogleMap>
 			</LoadScript>
-		</Container>
+		</Box>
 	);
 };
 

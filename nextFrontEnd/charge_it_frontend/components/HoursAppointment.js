@@ -85,6 +85,9 @@ const HoursAppointment = ({
 		<VStack overflowY="scroll" maxHeight="360px" minWidth="400px">
 			{hours.map((hour, index) => (
 				<Button
+					size="lg"
+					pt={1}
+					pb={1}
 					colorScheme={
 						firstClicked != null &&
 						index >= firstClicked &&

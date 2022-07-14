@@ -84,7 +84,7 @@ const UpdateStation = ({ ssrStation, ssrStationTypes }) => {
 				`http://localhost:8090/api/stations/update/${router.query.id}`,
 				updateStation
 			)
-			.then((res) => router.push("/stations"));
+			.then((res) => router.back());
 	};
 
 	return (

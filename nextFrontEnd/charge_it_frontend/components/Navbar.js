@@ -35,8 +35,14 @@ export const Navbar = () => {
 				<Box x flex={1} align="right">
 					<Box display={{ base: "none", md: "inline-block" }}>
 						<NextLink href="/">
-							<Button colorScheme="blue" mr={2} href="/">
+							<Button colorScheme="blue" mr={2}>
 								Home
+							</Button>
+						</NextLink>
+
+						<NextLink href="/bookings">
+							<Button colorScheme="blue" mr={2}>
+								Bookings
 							</Button>
 						</NextLink>
 
@@ -75,6 +81,12 @@ export const Navbar = () => {
 						<MenuList>
 							<MenuItem>
 								<NextLink href="/">Home</NextLink>
+							</MenuItem>
+
+							<MenuItem>
+								<NextLink href="/bookings">
+									All bookings
+								</NextLink>
 							</MenuItem>
 
 							<MenuItem>

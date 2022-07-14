@@ -71,6 +71,7 @@ const AddAppointment = ({
 	return (
 		<>
 			<Button
+				mt={2}
 				disabled={!startHour}
 				ref={btnRef}
 				colorScheme="blue"

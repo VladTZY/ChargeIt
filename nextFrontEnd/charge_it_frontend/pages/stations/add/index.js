@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Geocode from "react-geocode";
+import { usePlacesWidget } from "react-google-autocomplete";
 
 import {
 	FormControl,
@@ -31,6 +32,13 @@ export const addSation = () => {
 	const [stationTypeIdError, setStationTypeIdError] = useState(false);
 
 	const [stationTypes, setStationTypes] = useState([]);
+
+	const { ref, autocompleteRef } = usePlacesWidget({
+		apiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY_BOGDAN,
+		onPlaceSelected: (place) => {
+			setAddress(place.formatted_address);
+		},
+	});
 
 	useEffect(() => {
 		axios
@@ -138,12 +146,15 @@ export const addSation = () => {
 					<FormErrorMessage>City is required</FormErrorMessage>
 				</FormControl>
 
-				<FormLabel>Location Address</FormLabel>
-				<Input
-					id="address"
-					value={address}
-					onChange={(e) => setAddress(e.target.value)}
-				></Input>
+				<FormControl>
+					<FormLabel>Location Address</FormLabel>
+					<Input
+						ref={ref}
+						id="address"
+						value={address}
+						onChange={(e) => setAddress(e.target.value)}
+					></Input>
+				</FormControl>
 
 				<FormControl isInvalid={stationTypeIdError} isRequired="true">
 					<FormLabel>StationTypeId</FormLabel>
