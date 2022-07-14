@@ -27,7 +27,7 @@ export const Navbar = () => {
 				justify="space-between"
 			>
 				<Flex align="center" mr={2}>
-					<Text pl={2} fontSize="32px">
+					<Text pl={2} color="white" fontSize="32px">
 						ChargeIt
 					</Text>
 				</Flex>

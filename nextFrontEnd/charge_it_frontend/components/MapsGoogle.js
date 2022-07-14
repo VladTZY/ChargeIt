@@ -33,7 +33,9 @@ const MapsGoogle = ({ ssrStations }) => {
 
 	return (
 		<Container maxW="100%" align="center" pt={12} pb={4}>
-			<LoadScript googleMapsApiKey="AIzaSyARBq7b0klCuaTxKST6mCODooMWXZbQCnY">
+			<LoadScript
+				googleMapsApiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY_BOGDAN}
+			>
 				<GoogleMap
 					mapContainerStyle={containerStyle}
 					center={center}

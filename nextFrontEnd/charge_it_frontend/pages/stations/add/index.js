@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import Geocode from "react-geocode";
 
 import {
 	FormControl,
@@ -20,8 +21,7 @@ export const addSation = () => {
 	const [location, setLocation] = useState("");
 	const [country, setCountry] = useState("");
 	const [city, setCity] = useState("");
-	const [latitude, setLatitude] = useState(0.0);
-	const [longitude, setLongitude] = useState(0.0);
+	const [address, setAddress] = useState("");
 	const [stationTypeId, setStationTypeId] = useState(-1);
 
 	const [nameError, setNameError] = useState(false);
@@ -35,7 +35,12 @@ export const addSation = () => {
 	useEffect(() => {
 		axios
 			.get("http://localhost:8090/api/station_types")
-			.then((res) => setStationTypes(res.data));
+			.then((res) => setStationTypes(res.data))
+			.then((res) => {
+				Geocode.setApiKey(process.env.NEXT_PUBLIC_MAPS_API_KEY_BOGDAN);
+				Geocode.setLanguage("en");
+				Geocode.setLocationType("ROOFTOP");
+			});
 	}, []);
 
 	const validateForm = () => {
@@ -54,18 +59,26 @@ export const addSation = () => {
 				stationTypeIdError == -1
 			)
 		)
-			postNewStation();
+			addNewStation();
 	};
 
-	const postNewStation = () => {
+	const addNewStation = () => {
+		Geocode.fromAddress(address).then((res) => {
+			const { lat, lng } = res.results[0].geometry.location;
+
+			postNewStation(lat, lng);
+		});
+	};
+
+	const postNewStation = (lat, lng) => {
 		const newStation = {
 			name,
 			location,
-			opne: true,
+			open: true,
 			country,
 			city,
-			latitude,
-			longitude,
+			latitude: lat,
+			longitude: lng,
 			stationTypeId,
 		};
 
@@ -125,18 +138,11 @@ export const addSation = () => {
 					<FormErrorMessage>City is required</FormErrorMessage>
 				</FormControl>
 
-				<FormLabel>Latitude</FormLabel>
+				<FormLabel>Location Address</FormLabel>
 				<Input
-					id="latitude"
-					value={latitude}
-					onChange={(e) => setLatitude(e.target.value)}
-				></Input>
-
-				<FormLabel>longitude</FormLabel>
-				<Input
-					id="longitude"
-					value={longitude}
-					onChange={(e) => setLongitude(e.target.value)}
+					id="address"
+					value={address}
+					onChange={(e) => setAddress(e.target.value)}
 				></Input>
 
 				<FormControl isInvalid={stationTypeIdError} isRequired="true">

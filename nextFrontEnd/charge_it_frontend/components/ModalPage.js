@@ -2,17 +2,7 @@ import { useEffect, useState } from "react";
 import Moment from "moment";
 import axios from "axios";
 
-import { Box, Text, Button, Icon } from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
-	ModalBody,
-	ModalCloseButton,
-} from "@chakra-ui/react";
+import { ModalFooter, ModalBody, Container } from "@chakra-ui/react";
 
 import HoursAppointment from "./HoursAppointment";
 import AddAppointment from "./AddAppointment";
@@ -57,13 +47,15 @@ const ModalPage = ({ stationId, date, closeModal }) => {
 				setStartHour={setStartHour}
 			/>
 			<ModalFooter>
-				<AddAppointment
-					date={date}
-					startHour={startHour}
-					duration={(lastClicked - firstClicked + 1) * 30}
-					stationId={stationId}
-					closeModal={closeModal}
-				/>
+				<Container align="center">
+					<AddAppointment
+						date={date}
+						startHour={startHour}
+						duration={(lastClicked - firstClicked + 1) * 30}
+						stationId={stationId}
+						closeModal={closeModal}
+					/>
+				</Container>
 			</ModalFooter>
 		</ModalBody>
 	);

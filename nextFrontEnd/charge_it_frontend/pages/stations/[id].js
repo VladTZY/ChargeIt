@@ -14,6 +14,7 @@ import {
 	ModalCloseButton,
 	Container,
 	Button,
+	Box,
 } from "@chakra-ui/react";
 
 import AppointmentCalendar from "../../components/AppointmentCalendar";
@@ -60,19 +61,26 @@ export const StationPage = ({ ssrStation, ssrLocationUrl }) => {
 
 	return (
 		<Container pt={2} maxW="100%">
-			<Text align="center">{station.name}</Text>
-			<Text align="center">{station.location}</Text>
-			<Text pt={12}>
+			<Text align="center" pt={2} fontSize="6xl">
+				{station.name}
+			</Text>
+			<Text pt={12} fontSize="xl">
 				This station is located in {station.locationDetails.city},{" "}
-				{station.locationDetails.country} you can check the location on
+				{station.locationDetails.country}. You can check the location on
 				<Link href={locationUrl} isExternal>
 					{" "}
 					Google Maps <ExternalLinkIcon />{" "}
 				</Link>
 			</Text>
 
-			<Button onClick={deleteStation}>Delete</Button>
-			<Button onClick={updateStation}>Update</Button>
+			<Box pt={4} maxW="100%">
+				<Button colorScheme="blue" mr={2} onClick={deleteStation}>
+					Delete
+				</Button>
+				<Button colorScheme="blue" onClick={updateStation}>
+					Update
+				</Button>
+			</Box>
 
 			<Container maxW="container.md">
 				<AppointmentCalendar
@@ -86,7 +94,7 @@ export const StationPage = ({ ssrStation, ssrLocationUrl }) => {
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>
-						{Moment(date).format("yyyy-MM-DD")}
+						{station.name} {Moment(date).format("yyyy-MM-DD")}
 					</ModalHeader>
 					<ModalCloseButton />
 					<ModalPage
