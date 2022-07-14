@@ -149,6 +149,7 @@ export const addSation = () => {
 				<FormControl>
 					<FormLabel>Location Address</FormLabel>
 					<Input
+						placeholder="Type here..."
 						ref={ref}
 						id="address"
 						value={address}

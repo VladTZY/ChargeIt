@@ -19,8 +19,9 @@ import {
 
 import AppointmentCalendar from "../../components/AppointmentCalendar";
 import ModalPage from "../../components/ModalPage";
+import ReviewPage from "../../components/ReviewPage";
 
-export const StationPage = ({ ssrStation, ssrLocationUrl }) => {
+export const StationPage = ({ ssrStation, ssrLocationUrl, ssrReviews }) => {
 	const router = useRouter();
 
 	const [station, setStation] = useState(ssrStation);
@@ -104,6 +105,8 @@ export const StationPage = ({ ssrStation, ssrLocationUrl }) => {
 					/>
 				</ModalContent>
 			</Modal>
+
+			<ReviewPage ssrReviews={ssrReviews} stationId={router.query.id} />
 		</Container>
 	);
 };
@@ -113,16 +116,23 @@ export const getServerSideProps = async (context) => {
 	const stationRes = await axios.get(
 		`http://localhost:8090/api/stations/${id}`
 	);
-	const stationData = stationRes.data;
+	const stationData = await stationRes.data;
+
 	const locationUrlRes = await axios.get(
 		`http://localhost:8090/api/stations/${id}/location_url`
 	);
-	const locationUrlData = locationUrlRes.data;
+	const locationUrlData = await locationUrlRes.data;
+
+	const reviewsRes = await axios.get(
+		`http://localhost:8090/api/reviews/station/${id}`
+	);
+	const reviewsData = await reviewsRes.data;
 
 	return {
 		props: {
 			ssrStation: stationData,
 			ssrLocationUrl: locationUrlData,
+			ssrReviews: reviewsData,
 		},
 	};
 };

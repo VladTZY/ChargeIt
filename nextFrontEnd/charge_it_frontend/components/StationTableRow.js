@@ -4,8 +4,6 @@ import NextLink from "next/link";
 import { Tr, Td } from "@chakra-ui/react";
 
 export const StationTableRow = ({ station }) => {
-	console.log(station.name, station.open);
-
 	return (
 		<NextLink href={`/stations/${station.id}`}>
 			<Tr color={station.open ? "black" : "gray.200"} cursor="pointer">
